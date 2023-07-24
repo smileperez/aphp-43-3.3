@@ -2,39 +2,58 @@
 
 namespace Classes;
 
-abstract class Person
-{
-    protected $name;
-    protected $surname;
-    protected $age;
-    protected $GPA;
+use Interfaces\Iterator as Iterator;
+use Classes\Person as Person;
 
-    public function __construct(string $name, string $surname, int $age, float $GPA)
+class PeopleList implements Iterator {
+    public $listpeople = [];
+    private $count = 0;
+    private $index = 0;
+    public function current()
     {
-        $this->name = $name;
-        $this->surname = $surname;
-        $this->surname = $age;
-        $this->surname = $GPA;
-    }   
-
-    public function getFullname(): void {
-        echo $this->name . ' ' . $this->surname;
+        return $this->listpeople[$this->index];
     }
-
-    public function __get() {
-
+    public function next()
+    {
+        $this->index++;
+    }
+    public function rewind()
+    {
+        $this->index = 0;
+    }
+    public function key()
+    {
+        return $this->index;
+    }
+    public function valid()
+    {
+        return isset($this->listpeople[$this->key()]);
     }
     
-    public function __set() {
-
+    public function reverse()
+    {
+        $this->listpeople = array_reverse($this->listpeople);
+        $this->rewind();
     }
-
-    public function __sleep() {
-
+    public function addPeople(string $name, string $surname, int $age, float $GPA,)
+    {
+        array_push($this->listpeople, new Person($name, $surname, $age, $GPA));
+        $this->count++;
+        echo 'Персона '. $this->count . ' добавлена в лист'.PHP_EOL;
     }
-
-    public function  __wakeup() {
-
+    
+    public function removePeople($listpeople) 
+    {
+        $index = array_search($listpeople, $this->listpeople);
+        if(isset($this->listpeople[$index])) {
+            unset($this->listpeople[$index]);
+            $this->count--;
+        }
+        echo 'Персона '. $listpeople . ' удалена'.PHP_EOL;
+    }
+    public function totalCount()
+    {
+        return $this->count;
     }
 }
 ?>

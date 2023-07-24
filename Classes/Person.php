@@ -38,8 +38,8 @@ class Person
         echo "Запущена десериализация".PHP_EOL;
     }
 
-    // public function __toString(): string {
-
-    // }
+    public function __toString(): string {
+        return "({$this->name}, {$this->surname}, {$this->age}, {$this->GPA})".PHP_EOL;
+    }
 }
 ?>
