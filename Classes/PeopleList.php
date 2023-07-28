@@ -32,24 +32,40 @@ class PeopleList implements Iterator {
     
     public function reverse()
     {
-        $this->listpeople = array_reverse($this->listpeople);
-        $this->rewind();
+        try {
+            $this->listpeople = array_reverse($this->listpeople);
+            $this->rewind();
+            echo 'Список перевернут'.PHP_EOL;
+        } catch (\Exception $e) {
+            print "Error!: " . $e->getMessage().PHP_EOL;
+            die();
+        }
     }
     public function addPeople(string $name, string $surname, int $age, float $GPA,)
     {
-        array_push($this->listpeople, new Person($name, $surname, $age, $GPA));
-        $this->count++;
-        echo 'Персона '. $this->count . ' добавлена в лист'.PHP_EOL;
+        try {
+            array_push($this->listpeople, new Person($name, $surname, $age, $GPA));
+            $this->count++;
+            echo 'Персона '. $this->count . ' добавлена в лист'.PHP_EOL;
+        } catch (\Exception $e) {
+            print "Error!: " . $e->getMessage().PHP_EOL;
+            die();
+        }
     }
     
     public function removePeople($listpeople) 
     {
-        $index = array_search($listpeople, $this->listpeople);
-        if(isset($this->listpeople[$index])) {
-            unset($this->listpeople[$index]);
-            $this->count--;
+        try {
+            $index = array_search($listpeople, $this->listpeople);
+            if(isset($this->listpeople[$index])) {
+                unset($this->listpeople[$index]);
+                $this->count--;
+            }
+            echo 'Персона '. $listpeople . ' удалена'.PHP_EOL;
+        } catch (\Exception $e) {
+            print "Error!: " . $e->getMessage().PHP_EOL;
+            die();
         }
-        echo 'Персона '. $listpeople . ' удалена'.PHP_EOL;
     }
     public function totalCount()
     {
