@@ -2,30 +2,29 @@
 
 namespace Classes;
 
-use Interfaces\Iterator as Iterator;
 use Classes\Person as Person;
 
-class PeopleList implements Iterator {
+class PeopleList implements \Iterator {
     public $listpeople = [];
     private $count = 0;
     private $index = 0;
-    public function current()
+    public function current():mixed
     {
         return $this->listpeople[$this->index];
     }
-    public function next()
+    public function next():void
     {
         $this->index++;
     }
-    public function rewind()
+    public function rewind():void
     {
         $this->index = 0;
     }
-    public function key()
+    public function key():mixed
     {
         return $this->index;
     }
-    public function valid()
+    public function valid():bool
     {
         return isset($this->listpeople[$this->key()]);
     }
@@ -35,7 +34,7 @@ class PeopleList implements Iterator {
         try {
             $this->listpeople = array_reverse($this->listpeople);
             $this->rewind();
-            echo 'Список перевернут'.PHP_EOL;
+            echo 'Список перевернут.'.PHP_EOL;
         } catch (\Exception $e) {
             print "Error!: " . $e->getMessage().PHP_EOL;
             die();
@@ -46,30 +45,28 @@ class PeopleList implements Iterator {
         try {
             array_push($this->listpeople, new Person($name, $surname, $age, $GPA));
             $this->count++;
-            echo 'Персона '. $this->count . ' добавлена в лист'.PHP_EOL;
+            echo 'Персона '. $this->count . ' добавлена в лист.'.PHP_EOL;
         } catch (\Exception $e) {
             print "Error!: " . $e->getMessage().PHP_EOL;
             die();
         }
     }
     
-    public function removePeople($listpeople) 
+    public function removePeople($id) 
     {
         try {
-            $index = array_search($listpeople, $this->listpeople);
-            if(isset($this->listpeople[$index])) {
-                unset($this->listpeople[$index]);
-                $this->count--;
+            foreach ($this->listpeople as $key => $value) {
+                if ($key == $id) {
+                    unset($this->listpeople[$key]);
+                }
             }
-            echo 'Персона '. $listpeople . ' удалена'.PHP_EOL;
+            // Восстанавливаем все инексы массива, из-за удаления значения массива
+            $this->listpeople = array_values($this->listpeople);
+            echo 'Персона '. $id . ' удалена.'.PHP_EOL;
         } catch (\Exception $e) {
             print "Error!: " . $e->getMessage().PHP_EOL;
             die();
         }
-    }
-    public function totalCount()
-    {
-        return $this->count;
     }
 }
 ?>
